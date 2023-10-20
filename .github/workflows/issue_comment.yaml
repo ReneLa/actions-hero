@@ -12,7 +12,7 @@ jobs:
         run: echo '${{ toJSON(github.event)}}' \ jq
         shell: bash
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -28,10 +28,8 @@ jobs:
     steps:
       - name: Create Comment with API
         run: gh api -X POST \
-          http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comment \
-          -f body='
-          Comment but from the API call not an action
-          '
+          http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          -f body='Comment but from the API call not an action'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORGANIZATION: ${{ github.event.organisation.login }}
